@@ -1,0 +1,74 @@
+version: '3.9'
+
+services:
+  app:
+    container_name: 'app'
+    restart: always
+    image: ghcr.io/sohype-khaled/pluseoneblogtask:latest
+    env_file:
+      - ./.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - app-dir:/app
+      - static-data:/app/staticfiles
+      - media-data:/app/media
+    depends_on:
+      - db
+
+  db:
+    image: postgres:14
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+
+  proxy:
+    container_name: 'proxy'
+    restart: always
+    build:
+      context: ./proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - certbot-web:/vol/www
+      - proxy-dhparams:/vol/proxy
+      - certbot-certs:/etc/letsencrypt
+      - static-data:/app/staticfiles
+      - media-data:/app/media
+    env_file:
+      - ./.env
+    environment:
+      - DOMAIN=${DOMAIN}
+    # network_mode: host
+    depends_on:
+      - app
+
+  certbot:
+    container_name: 'certbot'
+    build:
+      context: ./certbot
+    command: echo "Skipping..."
+    env_file:
+      - ./.env
+    environment:
+      - EMAIL=${ACME_DEFAULT_EMAIL}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+    volumes:
+      - certbot-web:/vol/www
+      - certbot-certs:/etc/letsencrypt/
+    network_mode: host
+    depends_on:
+      - proxy
+
+volumes:
+  postgres_data:
+  certbot-web:
+  proxy-dhparams:
+  certbot-certs:
+  app-dir:
+  static-data:
+  media-data:
+
+
