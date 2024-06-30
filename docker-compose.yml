@@ -8,7 +8,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./app:/app
+      - app-dir:/app
       - static-data:/app/staticfiles
       - media-data:/app/media
     depends_on:
@@ -65,6 +65,7 @@ volumes:
   certbot-web:
   proxy-dhparams:
   certbot-certs:
+  app-dir:
   static-data:
   media-data:
 
