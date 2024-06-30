@@ -2,7 +2,7 @@ services:
   app:
     container_name: 'app'
     restart: always
-    image: ghcr.io/sohype-khaled/pluseoneblogtask:0.0.7
+    image: ghcr.io/sohype-khaled/pluseoneblogtask:latest
     env_file:
       - .env
     ports:
