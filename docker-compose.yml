@@ -4,7 +4,7 @@ services:
     restart: always
     image: ghcr.io/sohype-khaled/pluseoneblogtask:latest
     env_file:
-      - ./.env
+      - .env
     ports:
       - "8000:8000"
     volumes:
