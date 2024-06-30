@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cd PluseOneBlogTaskServer
+cd PlusOneBlogTaskServer
 
 docker compose up --build -d
