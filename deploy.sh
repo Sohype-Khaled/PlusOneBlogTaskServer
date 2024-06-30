@@ -2,7 +2,9 @@
 
 cd PlusOneBlogTaskServer
 
-docker volume rm plusoneblogtaskserver_app-dir
+docker compose down  
+
+docker volume rm -f plusoneblogtaskserver_app-dir
 
 docker compose pull app
 
